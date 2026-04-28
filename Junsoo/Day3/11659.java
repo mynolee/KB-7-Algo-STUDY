@@ -17,6 +17,7 @@ public class Main {
         for (int k = 0; k < M; k++) {
             int i = scanner.nextInt();
             int j = scanner.nextInt();
+            // i부터 j까지 합이므로 (1번부터 j까지의 합) - (1번부터 i-1까지의 합)
             System.out.println(dpSum[j] - dpSum[i - 1]);
         }
     }
