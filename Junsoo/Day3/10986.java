@@ -7,21 +7,23 @@ public class Main {
         int N = scanner.nextInt();
         int M = scanner.nextInt();
 
+        long answer = 0;
         // 누적 합 저장
-        long[] ASum = new long[N + 1];
-        for (int i = 1; i <= N; i++) {
-            ASum[i] = ASum[i - 1] + scanner.nextInt();
+        long sum = 0;
+        // 이전에 같은 나머지가 나온 횟수 = 나누어 떨어지는 구간 수
+        // 이전까지의 누적합 중 나머지가 같은 누적합 개수 저장
+        long[] count = new long[M];
+        // 누적합의 나머지가 0이면 자기 자신만으로도 나누어 떨어지는 것이므로 count[0]은 1인 상태로 시작
+        // 이렇게 해야 0일 때마다 자기 자신이 포함된 +1이 됨
+        count[0] = 1;
+        for (int i = 0; i < N; i++) {
+            sum += scanner.nextInt();
+            int remainder = (int) (sum % M);
+            // 이전까지의 구간 개수를 더하고 자기 자신도 포함시켜서 이후 해당 구간에 포함되도록 함
+            answer += count[remainder];
+            count[remainder]++;
         }
 
-        // i: 끝 점, j: 시작 점인 모든 구간 계산
-        long answer = 0;
-        for (int j = 1; j <= N; j++) {
-            for (int i = 0; i < j; i++) {
-                if ((ASum[j] - ASum[i]) % M == 0) {
-                    answer++;
-                }
-            }
-        }
         System.out.println(answer);
     }
 }
