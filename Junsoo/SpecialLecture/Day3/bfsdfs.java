@@ -55,7 +55,7 @@ public class Main {
         visited[cur] = true;
         // 다음노드 dfs 실행
         for (int next : graph.get(cur)) {
-            if (!visited[cur]) {
+            if (!visited[next]) {
                 dfs(next, graph, visited);
             }
         }
