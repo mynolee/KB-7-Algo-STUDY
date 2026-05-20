@@ -15,7 +15,7 @@ class Solution {
                 if (chars.length < size) {
                     continue;
                 }
-                // 혀냊 주문에서 size개짜리 메뉴 조합 생성
+                // 현재 주문에서 size개짜리 메뉴 조합 생성
                 dfs(chars, map, size, 0, "");
             }
             int maxCount = 0;
