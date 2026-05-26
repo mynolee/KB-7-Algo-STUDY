@@ -25,12 +25,12 @@ public class Main {
 
         int exist = 0;
         for (int i = 0; i < n; i++) {
-            if (!v[i]) {
-                if (dfs(i, g, v) >= 5) {
-                    exist = 1;
-                    break;
-                }
+            v[i] = true;
+            if (dfs(i, g, v, 1)) {
+                exist = 1;
+                break;
             }
+            v[i] = false;
         }
         pw.println(exist);
 
@@ -40,24 +40,18 @@ public class Main {
         pw.close();
     }
 
-    public static int dfs(int cur, List<List<Integer>> g, boolean[] v) {
-        v[cur] = true;
-
-        int cnt = 1;
-        int max1 = 0;
-        int max2 = 0;
+    public static boolean dfs(int cur, List<List<Integer>> g, boolean[] v, int cnt) {
+        if (cnt >= 5) return true;
 
         for (int nod : g.get(cur)) {
             if (!v[nod]) {
-                int res = dfs(nod, g, v);
-                if (res > max1) max1 = res;
-                else if (res > max2) max2 = res;
+                v[nod] = true;
+                if (dfs(nod, g, v, cnt + 1)) return true;
+                v[nod] = false;
             }
         }
 
-        cnt += max1 + max2;
-
-        return cnt;
+        return false;
     }
 }
 
