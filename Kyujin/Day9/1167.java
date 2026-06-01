@@ -30,7 +30,7 @@ public class Main {
             }
         }
 
-        dfs(1, g, new boolean[n + 1], 0);
+        dfs(1, g, new boolean[n + 1]);
 
         pw.println(r);
         // 정답 출력 pw.println();
@@ -41,7 +41,7 @@ public class Main {
         pw.close();
     }
 
-    public static int dfs(int cur, List<List<int[]>> g, boolean[] v, int curDist) {
+    public static int dfs(int cur, List<List<int[]>> g, boolean[] v) {
         v[cur] = true;
 
         int max1 = 0;
@@ -51,7 +51,7 @@ public class Main {
             int dist = arr[1];
 
             if (!v[nod]) {
-                int remain = dist + dfs(nod, g, v, curDist + dist);
+                int remain = dist + dfs(nod, g, v);
 
                 if (remain > max1) {
                     max2 = max1;
@@ -60,15 +60,14 @@ public class Main {
                     max2 = remain;
                 }
             }
-
-            r = Math.max(r, max1 + max2);
         }
+        r = Math.max(r, max1 + max2);
 
         return max1;
     }
 }
 /*
- * 첫 노드에서 dfs를 하면 가장 긴 거리가 나올거라고 직관적으로 느껴지지만 그렇지 않다.
+ * 첫 노드에서 dfs를 하면 가장 긴 거리가 나올거라고 직관적으로 느껴지지만  그렇지 않다.
  * 왜냐하면 끝 노드에서 첫 노드로 가는 길보다 더 긴 길이 있을 수 있기 때문이다.
  * 뭔가 Top2를 저장해야 할 것 같은 느낌
  * 핵심 아이디어! 갈림길이 있을때마다 Top2를 뽑아서 트리를 만들어보고 지름을 갱신해주는것이다.
