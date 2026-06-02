@@ -2,8 +2,12 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
+
+    // 트리 간선 정보 담을 클래스
     static class Edge {
-        int to, weight;
+        int to;
+        int weight;
+
         Edge(int to, int weight) {
             this.to = to;
             this.weight = weight;
@@ -12,62 +16,59 @@ public class Main {
 
     static ArrayList<Edge>[] tree;
     static boolean[] visited;
-    static int maxDiameter = 0; // 전역으로 지름의 최댓값을 저장
+    static int maxDistance = 0;
+    static int farthestNode = 0;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         int V = Integer.parseInt(br.readLine());
-        
         tree = new ArrayList[V + 1];
         for (int i = 1; i <= V; i++) {
             tree[i] = new ArrayList<>();
         }
 
+        // 입력 받기 시작
         for (int i = 0; i < V; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
+            // 정점 번호
             int from = Integer.parseInt(st.nextToken());
+
             while (true) {
                 int to = Integer.parseInt(st.nextToken());
                 if (to == -1) break;
+                // 정점까지의 거리
                 int weight = Integer.parseInt(st.nextToken());
+                
                 tree[from].add(new Edge(to, weight));
             }
         }
-
-        visited = new boolean[V + 1];
         
-        // 아무 노드(1번)에서나 DFS를 딱 한 번만 시작합니다.
-        dfs(1);
+        // 1번째 DFS : 임의의 노드(1)에서 가장 먼 노드 찾기
+        visited = new boolean[V + 1];
+        dfs(1, 0);
+        
+        // 2번째 DFS : 1번째 DFS에서 찾은 가장 먼노드의 가장 먼 노드 찾기
+        visited = new boolean[V + 1];
+        dfs(farthestNode, 0);
 
-        System.out.println(maxDiameter);
+        System.out.println(maxDistance);
     }
-
-    // 이 함수는 현재 노드에서 아래(자식 방향)로 뻗어나갈 수 있는 '가장 긴 단일 경로의 길이'를 반환합니다.
-    public static int dfs(int node) {
+    
+    private static void dfs (int node, int distance) {
         visited[node] = true;
-
-        int max1 = 0; // 가장 긴 자식 경로
-        int max2 = 0; // 두 번째로 긴 자식 경로
-
+        
+        // 현재까지 거리가 최대 거리보다 클때마다 갱신
+        if (distance > maxDistance) {
+            maxDistance = distance;
+            farthestNode = node;
+        }
+        
+        // 연결된 노드 탐색
         for (Edge edge : tree[node]) {
             if (!visited[edge.to]) {
-                // 자식 노드가 아래로 쭉 뻗어가서 얻은 최대 길이에 현재 간선 가중치를 더함
-                int childPath = dfs(edge.to) + edge.weight;
-
-                // 탑 2 갱신 로직
-                if (childPath > max1) {
-                    max2 = max1;
-                    max1 = childPath;
-                } else if (childPath > max2) {
-                    max2 = childPath;
-                }
+                dfs(edge.to, distance + edge.weight);
             }
         }
-
-        // 현재 노드를 중심으로 왼쪽 자식 최장선 + 오른쪽 자식 최장선을 더해 지름을 갱신
-        maxDiameter = Math.max(maxDiameter, max1 + max2);
-
-        // 부모 노드에게는 자신이 갈 수 있는 가장 긴 한 갈래의 길만 반환해줌
-        return max1;
     }
 }
