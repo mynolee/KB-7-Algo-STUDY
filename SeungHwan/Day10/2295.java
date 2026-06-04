@@ -23,13 +23,15 @@ public class Main {
             }
         }
 
-        // 앞서 14번째 줄에서 Arrays.sort(U)를 했기 때문에 twoSum도 자연스럽게 크기순으로 정렬돼있음.
-        for (int i = N * N - 1; i >= 0; i--) {
-            for (int j = N - 1; j >= 0; j--) {
-                int target = twoSum[i] + U[j];
+        Arrays.sort(twoSum);
+        
+        // twoSum 을 target으로 잡으면 안됨!! 왜냐면 twoSum 자체가 n^2 크기라 for 문 자체는 하나여도 순회하는게 N^2 이라 시간 초과남
+        for (int i = N - 1; i >= 0; i--) {
+            for (int j = 0; j < N; j++) {
+                int target = U[i] - U[j];
 
-                if (Arrays.binarySearch(U, target) >= 0) { // 존재한다면
-                    System.out.println(target);
+                if (Arrays.binarySearch(twoSum, target) >= 0) { // 존재한다면
+                    System.out.println(U[i]);
                     return;
                 }
             }
