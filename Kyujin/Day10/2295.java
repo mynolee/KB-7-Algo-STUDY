@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -17,15 +18,24 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             arr[i] = Integer.parseInt(st.nextToken());
         }
+        Arrays.sort(arr);
 
         int max = 0;
+        int[] ab = new int[n * n];
+
+        int idx = 0;
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
-                for (int k = j; k < n; k++) {
-                    int target = arr[i] + arr[j] + arr[k];
-                    if (Arrays.binarySearch(arr, target) > 0) {
-                        max = Math.max(max, target);
-                    }
+                ab[idx] = arr[i] + arr[j];
+                idx++;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                int target = arr[j] - arr[i];
+                if (Arrays.binarySearch(ab, target) >= 0) {
+                    max = Math.max(max, target + arr[i]);
                 }
             }
         }
