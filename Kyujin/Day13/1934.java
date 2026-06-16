@@ -17,8 +17,11 @@ public class Main {
             st = new StringTokenizer(br.readLine());
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
-            
-            bw.write(String.valueOf(lcm(a, b)));
+
+            int gcd = gcd(Math.max(a, b), Math.min(a, b));
+            int lcm = a * b / gcd;
+
+            bw.write(String.valueOf(lcm));
             bw.newLine();
         }
 
@@ -27,18 +30,7 @@ public class Main {
         bw.close();
     }
 
-    // 최소공배수를 구하는 함수
-    private static int lcm(int a, int b) {
-        int min = Math.min(a, b);
-
-        int gcd = 1;
-        // 1부터 a,b 중 더 작은 수까지 a, b를 나눠보면서 최대공약수를 구한다.
-        for (int i = 1; i <= min; i++) {
-            if (a % i == 0 && b % i == 0) gcd = i;
-        }
-
-        // 최소공배수는 최대공약수 * (a / 최대공약수) * (b / 최대공약수)가 되므로
-        // a * b / 최대공약수를 리턴하면 된다.
-        return a * b / gcd;
+    private static int gcd(int a, int b) {
+        return a % b == 0 ? b : gcd(b, a % b);
     }
 }
