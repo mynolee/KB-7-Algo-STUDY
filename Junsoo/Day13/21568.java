@@ -18,24 +18,24 @@ public class Main {
         }
 
         // ax + by = gcd를 만족하는 x, y 구함
-        long[] answer = execute(a, b);
+        long[] answer = extendedGcd(a, b);
         // ax + by = c를 만들기 위해 c / gcd 만큼 곱함
         long multiply = c / gcd;
         long x = answer[0] * (c / gcd);
         long y = answer[1] * (c / gcd);
-        
+
         System.out.println(x + " " + y);
     }
 
     // ax + by = gcd(a, b)를 만족하는 x, y 구하는 함수
-    private static long[] execute(long a, long b) {
+    private static long[] extendedGcd(long a, long b) {
         // b가 0이면 a * 1 + 0 * 0 = a, 따라서 x = 1, y = 0
         if (b == 0) {
             return new long[]{1, 0};
         }
 
         // b * x + (a % b) * y = gcd(a, b)의 해
-        long[] next = execute(b, a % b);
+        long[] next = extendedGcd(b, a % b);
 
         // 이전 단계의 해를 현재 단계의 해로 변환
         // b * prevX + (a % b) * prevY
