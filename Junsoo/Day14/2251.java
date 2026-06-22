@@ -6,7 +6,7 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int water[] = new int[3];
+        int[] water = new int[3];
         for (int i = 0; i < 3; i++) {
             water[i] =  Integer.parseInt(st.nextToken());
         }
@@ -20,13 +20,13 @@ public class Main {
         visited[0][0] = true;
         List<Integer> answer =  new ArrayList<>();
         answer.add(water[2]);
-        
+
         while (!q.isEmpty()) {
             int[] cur = q.poll();
             int a = cur[0];
             int b = cur[1];
 
-            for (int i = 0; i < from.length; i++) {
+            for (int i = 0; i < 6; i++) {
                 int[] next = new int[]{a, b, water[2] - a - b};
                 next[to[i]] += next[from[i]];
                 next[from[i]] = 0;
