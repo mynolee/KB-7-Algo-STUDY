@@ -34,19 +34,25 @@ public class Main {
         Arrays.fill(d, Integer.MAX_VALUE);
         d[start] = 0;
 
-        Deque<Integer> q = new ArrayDeque<>();
-        q.offer(start);
+        PriorityQueue<int[]> q = new PriorityQueue<>(
+            Comparator.comparingInt((int[] o) -> o[1])
+        );
+        q.offer(new int[]{start, 0});
 
         while (!q.isEmpty()) {
-            int cur = q.poll();
+            int[] cur = q.poll();
+            int curNode = cur[0];
+            int curDist = cur[1];
 
-            for (int[] list : g.get(cur)) {
-                int next = list[0];
-                int dist = list[1];
+            if (curDist > d[curNode]) continue;
 
-                if (d[next] > d[cur] + dist) {
-                    d[next] = d[cur] + dist;
-                    q.offer(next);
+            for (int[] next : g.get(curNode)) {
+                int nextNode = next[0];
+                int dist = next[1];
+
+                if (d[nextNode] > d[curNode] + dist) {
+                    d[nextNode] = d[curNode] + dist;
+                    q.offer(new int[]{nextNode, d[nextNode]});
                 }
             }
         }
